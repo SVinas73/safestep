@@ -1315,35 +1315,46 @@ export default function App() {
     { name: 'Juan Beracochea' },
     { name: 'Aaron Britos' }
   ]);
-  const [membersPhoto, setMembersPhoto] = useState(() => {
-    const saved = localStorage.getItem('safestep_membersPhoto');
-    return saved ? JSON.parse(saved) : [];
-  });
 
-  const [objetivoPhotos, setObjetivoPhotos] = useState(() => {
-    const saved = localStorage.getItem('safestep_objetivoPhotos');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [membersPhoto, setMembersPhoto] = useState([]);
+  const [objetivoPhotos, setObjetivoPhotos] = useState([]);
+  const [avances, setAvances] = useState([]);
+  const [componentes, setComponentes] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
-  const [avances, setAvances] = useState(() => {
-    try {
-      const saved = localStorage.getItem('safestep_avances');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        return Array.isArray(parsed) ? parsed : [];
+  // NUEVO: Cargar datos automáticamente al iniciar
+  React.useEffect(() => {
+    const loadData = async () => {
+      try {
+        const response = await fetch('/safestep/data.json');
+        const data = await response.json();
+        
+        if (data.objetivo) {
+          localStorage.setItem('safestep_objetivo', data.objetivo);
+        }
+        if (data.objetivoPhotos) {
+          setObjetivoPhotos(data.objetivoPhotos);
+        }
+        if (data.membersPhoto) {
+          setMembersPhoto(data.membersPhoto);
+        }
+        if (data.avances) {
+          setAvances(data.avances);
+        }
+        if (data.componentes) {
+          setComponentes(data.componentes);
+        }
+        
+        setDataLoaded(true);
+      } catch (error) {
+        console.error('Error cargando datos:', error);
+        setDataLoaded(true);
       }
-      return [];
-    } catch (error) {
-      console.error('Error al cargar avances:', error);
-      alert('⚠️ Error al cargar datos guardados. Se iniciará con datos limpios.');
-      return [];
-    }
-  });
-
-  const [componentes, setComponentes] = useState(() => {
-    const saved = localStorage.getItem('safestep_componentes');
-    return saved ? JSON.parse(saved) : [];
-  });
+    };
+    
+    loadData();
+  }, []);
+  
 
   React.useEffect(() => {
     localStorage.setItem('safestep_membersPhoto', JSON.stringify(membersPhoto));
