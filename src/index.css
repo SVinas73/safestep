@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Audiowide', sans-serif;
+  letter-spacing: 2px;
+}
+
+/* Deshabilitar corrector ortográfico en inputs y textareas */
+input, textarea {
+  font-family: 'Inter', sans-serif;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+}
+
+/* Deshabilitar subrayado de errores */
+textarea, input[type="text"] {
+  spellcheck: false;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
