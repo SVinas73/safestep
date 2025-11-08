@@ -1326,7 +1326,7 @@ export default function App() {
   React.useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await fetch('/safestep/safestep-backup.json');
+        const response = await fetch('/safestep/safestep-backup-2025-11-08 (12).json');
         const data = await response.json();
         
         if (data.objetivo) {
