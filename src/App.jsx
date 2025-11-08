@@ -565,9 +565,9 @@ function SeccionObjetivo({ objetivoPhotos, setObjetivoPhotos }) {
     return saved || '';
   });
 
-  React.useEffect(() => {
-    localStorage.setItem('safestep_objetivo', objetivo);
-  }, [objetivo]);
+  //React.useEffect(() => {
+    //localStorage.setItem('safestep_objetivo', objetivo);
+  //}, [objetivo]);
 
   const deletePhoto = (index) => {
     setObjetivoPhotos(prev => prev.filter((_, i) => i !== index));
@@ -1326,7 +1326,7 @@ export default function App() {
   React.useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await fetch('/safestep/safestep-backup-2025-11-08 (12).json');
+        const response = await fetch('/safestep/safestep-backup.json');
         const data = await response.json();
         
         if (data.objetivo) {
@@ -1356,34 +1356,34 @@ export default function App() {
   }, []);
   
 
-  React.useEffect(() => {
-    localStorage.setItem('safestep_membersPhoto', JSON.stringify(membersPhoto));
-  }, [membersPhoto]);
+  // React.useEffect(() => {
+    // localStorage.setItem('safestep_membersPhoto', JSON.stringify(membersPhoto));
+  // }, [membersPhoto]);
 
-  React.useEffect(() => {
-    localStorage.setItem('safestep_objetivoPhotos', JSON.stringify(objetivoPhotos));
-  }, [objetivoPhotos]);
+  // React.useEffect(() => {
+    // localStorage.setItem('safestep_objetivoPhotos', JSON.stringify(objetivoPhotos));
+  // }, [objetivoPhotos]);
 
-  React.useEffect(() => {
-    try {
-      const dataString = JSON.stringify(avances);
+  // React.useEffect(() => {
+    // try {
+      // const dataString = JSON.stringify(avances);
     
     // Verificar tamaño antes de guardar
-      if (dataString.length > 4.5 * 1024 * 1024) {
-        console.warn('⚠️ Los datos son muy grandes para localStorage');
-        return;
-      }
+      // if (dataString.length > 4.5 * 1024 * 1024) {
+        // console.warn('⚠️ Los datos son muy grandes para localStorage');
+        // return;
+      // }
     
-      localStorage.setItem('safestep_avances', dataString);
-    } catch (error) {
-      console.error('Error al guardar en localStorage:', error);
-      alert('⚠️ No se pudieron guardar los cambios. El almacenamiento está lleno.');
-    }
-  }, [avances]);
+      // localStorage.setItem('safestep_avances', dataString);
+    // } catch (error) {
+      //console.error('Error al guardar en localStorage:', error);
+      //alert('⚠️ No se pudieron guardar los cambios. El almacenamiento está lleno.');
+    //}
+  //}, [avances]);
 
-  React.useEffect(() => {
-    localStorage.setItem('safestep_componentes', JSON.stringify(componentes));
-  }, [componentes]);
+  //React.useEffect(() => {
+    //localStorage.setItem('safestep_componentes', JSON.stringify(componentes));
+  //}, [componentes]);
 
   return (
     <div className="min-h-screen px-4 py-8 relative overflow-hidden" 
