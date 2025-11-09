@@ -743,84 +743,6 @@ function SeccionObjetivo({ objetivoPhotos, setObjetivoPhotos }) {
   );
 }
 
-// NUEVO: Componente para videos de Google Drive, YouTube, etc
-function VideoPlayer({ video }) {
-  // Detectar si es un video de YouTube
-  if (video.type === 'youtube' || video.src.includes('youtube.com') || video.src.includes('youtu.be')) {
-    let embedUrl = video.src;
-    
-    if (video.src.includes('watch?v=')) {
-      const videoId = video.src.split('watch?v=')[1].split('&')[0];
-      embedUrl = `https://www.youtube.com/embed/${videoId}`;
-    } else if (video.src.includes('youtu.be/')) {
-      const videoId = video.src.split('youtu.be/')[1].split('?')[0];
-      embedUrl = `https://www.youtube.com/embed/${videoId}`;
-    }
-    
-    return (
-      <iframe
-        src={embedUrl}
-        className="w-full h-80 rounded-2xl"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        style={{
-          border: '2px solid rgba(168,85,247,0.5)',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(168,85,247,0.2)',
-          background: '#000'
-        }}
-      />
-    );
-  }
-  
-  // Detectar si es Google Drive
-  if (video.type === 'drive' || video.src.includes('drive.google.com')) {
-    let embedUrl = video.src;
-    
-    // Convertir URL de Google Drive a formato embed
-    if (video.src.includes('/file/d/')) {
-      const fileId = video.src.split('/file/d/')[1].split('/')[0];
-      embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
-    }
-    
-    return (
-      <iframe
-        src={embedUrl}
-        className="w-full h-80 rounded-2xl"
-        frameBorder="0"
-        allow="autoplay"
-        allowFullScreen
-        style={{
-          border: '2px solid rgba(168,85,247,0.5)',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(168,85,247,0.2)',
-          background: '#000'
-        }}
-      />
-    );
-  }
-  
-  // Video local (fallback)
-  return (
-    <video
-      src={video.src}
-      controls
-      preload="metadata"
-      className="w-full h-80 rounded-2xl"
-      controlsList="nodownload"
-      playsInline
-      style={{
-        border: '2px solid rgba(168,85,247,0.5)',
-        boxShadow: '0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(168,85,247,0.2)',
-        background: '#000',
-        objectFit: 'contain'
-      }}
-    >
-      Tu navegador no soporta el elemento video.
-    </video>
-  );
-}
-
-
 function SeccionInformes({ avances, setAvances }) {
   const MODO_PRESENTACION = true;
   const [selectedAvance, setSelectedAvance] = useState(null);
@@ -1097,8 +1019,27 @@ function SeccionInformes({ avances, setAvances }) {
                     whileHover={{ scale: 1.03, y: -5 }}
                     className="relative group"
                   >
-                    <VideoPlayer video={video} />
-                    {!MODO_PRESENTACION && (
+                    <video
+                      key={`${avance.id}-vid-${idx}`}
+                      src={video.src}
+                      controls
+                      preload="metadata"
+                      className="w-full h-80 rounded-2xl"
+                      controlsList="nodownload"
+                      playsInline
+                      onError={(e) => {
+                        console.error('Error cargando video:', video.name, e);
+                        alert(`⚠️ No se pudo cargar el video "${video.name}". Puede ser demasiado grande.`);
+                      }}
+                      style={{
+                        border: '2px solid rgba(168,85,247,0.5)',
+                        boxShadow: '0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(168,85,247,0.2)',
+                        background: '#000',
+                        objectFit: 'contain'
+                      }}
+                    >
+                      Tu navegador no soporta el elemento video.
+                    </video>
                     <button
                       onClick={() => deleteAvanceVideo(avance.id, idx)}
                       className="absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all font-black text-xl"
@@ -1108,7 +1049,6 @@ function SeccionInformes({ avances, setAvances }) {
                     >
                       ✕
                     </button>
-                    )}
                   </motion.div>
                 ))}
               </div>
@@ -1387,8 +1327,7 @@ export default function App() {
     const loadData = async () => {
       try {
         localStorage.clear();
-        const response = await fetch(`${import.meta.env.BASE_URL}safestep-backup.json?v=4`);
-
+        const response = await fetch('/safestep/safestep-backup.json?v=5');
         const data = await response.json();
         
         if (data.objetivo) {
