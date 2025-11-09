@@ -1387,7 +1387,8 @@ export default function App() {
     const loadData = async () => {
       try {
         localStorage.clear();
-        const response = await fetch('/safestep/safestep-backup-2025-11-08%20(12).json?v=4');
+        const response = await fetch(`${import.meta.env.BASE_URL}safestep-backup.json?v=4`);
+
         const data = await response.json();
         
         if (data.objetivo) {
