@@ -363,6 +363,35 @@ function Inicio() {
             </motion.div>
           ))}
         </div>
+
+        {/* 👇 BOTÓN DE DESCARGA DE DOCUMENTACIÓN - AGREGADO AQUÍ */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+          className="mt-8 text-center"
+        >
+          <a 
+            href="/safestep/documentacion-tecnica.pdf" 
+            download
+            className="inline-block"
+          >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 rounded-full font-bold text-xl"
+              style={{
+                background: 'linear-gradient(135deg, rgba(139,92,246,0.4), rgba(59,130,246,0.4))',
+                border: '2px solid rgba(139,92,246,0.6)',
+                boxShadow: '0 0 30px rgba(139,92,246,0.4)',
+                color: 'white',
+                fontFamily: 'Orbitron, sans-serif'
+              }}
+            >
+              📄 DESCARGAR DOCUMENTACIÓN TÉCNICA
+            </motion.div>
+          </a>
+        </motion.div>
       </motion.div>
     </motion.section>
   );
